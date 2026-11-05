@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <com.aubrey.miboxlauncher.RatioFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/slot_bg">
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="12dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+    </com.aubrey.miboxlauncher.RatioFrameLayout>
+
+    <!-- Keeps the empty slot as tall as an app tile (label row). -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="31dp" />
+</LinearLayout>

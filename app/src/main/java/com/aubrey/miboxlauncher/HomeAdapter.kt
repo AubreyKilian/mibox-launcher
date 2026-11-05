@@ -1,0 +1,98 @@
+package com.aubrey.miboxlauncher
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class HomeAdapter(
+    private val onLaunch: (AppEntry) -> Unit,
+    private val onTogglePin: (AppEntry) -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var cells: List<Cell> = emptyList()
+    private var loaded: LoadedApps? = null
+
+    fun submit(newCells: List<Cell>, newLoaded: LoadedApps) {
+        cells = newCells
+        loaded = newLoaded
+        notifyDataSetChanged()
+    }
+
+    fun spanSize(position: Int): Int =
+        if (cells[position] is Cell.Header) HomeModel.COLUMNS else 1
+
+    /** Position of the first app tile, or -1 when there is none. */
+    fun firstAppPosition(): Int = cells.indexOfFirst { it is Cell.App }
+
+    override fun getItemCount() = cells.size
+
+    override fun getItemViewType(position: Int) = when (cells[position]) {
+        is Cell.Header -> TYPE_HEADER
+        is Cell.App -> TYPE_APP
+        is Cell.EmptySlot -> TYPE_EMPTY
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TYPE_HEADER -> Simple(inflater.inflate(R.layout.item_header, parent, false))
+            TYPE_EMPTY -> Simple(inflater.inflate(R.layout.item_empty, parent, false))
+            else -> AppHolder(inflater.inflate(R.layout.item_app, parent, false))
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val cell = cells[position]) {
+            is Cell.Header -> (holder.itemView as TextView).text = cell.title
+            is Cell.EmptySlot -> holder.itemView.findViewById<TextView>(R.id.hint).apply {
+                text = if (cell.showHint) context.getString(R.string.pin_hint) else ""
+            }
+            is Cell.App -> (holder as AppHolder).bind(cell)
+        }
+    }
+
+    private class Simple(view: View) : RecyclerView.ViewHolder(view)
+
+    private inner class AppHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val icon: ImageView = view.findViewById(R.id.icon)
+        private val label: TextView = view.findViewById(R.id.label)
+
+        init {
+            view.setOnFocusChangeListener { v, hasFocus ->
+                v.animate().scaleX(if (hasFocus) FOCUS_SCALE else 1f)
+                    .scaleY(if (hasFocus) FOCUS_SCALE else 1f)
+                    .setDuration(120)
+                    .start()
+            }
+        }
+
+        fun bind(cell: Cell.App) {
+            val entry = cell.entry
+            label.text = entry.label
+            val art = loaded?.artFor(entry.packageName)
+            icon.setImageDrawable(art?.drawable)
+            icon.scaleType = if (art?.isBanner == true) {
+                ImageView.ScaleType.CENTER_CROP
+            } else {
+                ImageView.ScaleType.FIT_CENTER
+            }
+            val pad = if (art?.isBanner == true) 0 else (itemView.resources.displayMetrics.density * 16).toInt()
+            icon.setPadding(pad, pad, pad, pad)
+            itemView.setOnClickListener { onLaunch(entry) }
+            itemView.setOnLongClickListener {
+                onTogglePin(entry)
+                true
+            }
+        }
+    }
+
+    private companion object {
+        const val TYPE_HEADER = 0
+        const val TYPE_APP = 1
+        const val TYPE_EMPTY = 2
+        const val FOCUS_SCALE = 1.08f
+    }
+}
