@@ -68,19 +68,29 @@ class MainActivity : Activity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() = Unit
 
-    private fun render() {
+    /**
+     * Redraws the grid. Focus goes to [focusPackage] when given (the tile that just moved),
+     * else to the first app tile when [focusFirstTile] is set, else stays where it was.
+     */
+    private fun render(focusPackage: String? = null) {
         val current = loaded ?: return
+        val gridHadFocus = grid.hasFocus()
         adapter.submit(HomeModel.build(current.apps, pins), current)
-        if (focusFirstTile) {
-            focusFirstTile = false
-            grid.post {
-                val position = adapter.firstAppPosition()
-                if (position >= 0) {
-                    grid.scrollToPosition(position)
-                    grid.post { grid.findViewHolderForAdapterPosition(position)?.itemView?.requestFocus() }
-                }
-            }
+        val target = when {
+            focusPackage != null -> focusPackage
+            focusFirstTile -> adapter.firstAppPackage()
+            gridHadFocus -> adapter.lastFocusedPackage
+            else -> null
         }
+        focusFirstTile = false
+        if (target != null) grid.post { focusTile(target) }
+    }
+
+    private fun focusTile(packageName: String) {
+        val position = adapter.positionOf(packageName)
+        if (position < 0) return
+        grid.scrollToPosition(position)
+        grid.post { grid.findViewHolderForAdapterPosition(position)?.itemView?.requestFocus() }
     }
 
     private fun launch(entry: AppEntry) {
@@ -105,7 +115,7 @@ class MainActivity : Activity() {
         pinStore.write(updated)
         val message = if (entry.packageName in updated) R.string.pinned else R.string.unpinned
         Toast.makeText(this, getString(message, entry.label), Toast.LENGTH_SHORT).show()
-        render()
+        render(focusPackage = entry.packageName)
     }
 
     private fun openSettings() {

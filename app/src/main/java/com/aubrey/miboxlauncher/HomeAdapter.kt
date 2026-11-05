@@ -15,6 +15,10 @@ class HomeAdapter(
     private var cells: List<Cell> = emptyList()
     private var loaded: LoadedApps? = null
 
+    /** Package of the app tile that last had focus. */
+    var lastFocusedPackage: String? = null
+        private set
+
     fun submit(newCells: List<Cell>, newLoaded: LoadedApps) {
         cells = newCells
         loaded = newLoaded
@@ -24,8 +28,12 @@ class HomeAdapter(
     fun spanSize(position: Int): Int =
         if (cells[position] is Cell.Header) HomeModel.COLUMNS else 1
 
-    /** Position of the first app tile, or -1 when there is none. */
-    fun firstAppPosition(): Int = cells.indexOfFirst { it is Cell.App }
+    /** Package of the first app tile, or null when there is none. */
+    fun firstAppPackage(): String? = cells.firstNotNullOfOrNull { (it as? Cell.App)?.entry?.packageName }
+
+    /** Position of the tile for [packageName], or -1 when it is not shown. */
+    fun positionOf(packageName: String): Int =
+        cells.indexOfFirst { it is Cell.App && it.entry.packageName == packageName }
 
     override fun getItemCount() = cells.size
 
@@ -59,9 +67,11 @@ class HomeAdapter(
     private inner class AppHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val icon: ImageView = view.findViewById(R.id.icon)
         private val label: TextView = view.findViewById(R.id.label)
+        private var boundPackage: String? = null
 
         init {
             view.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) lastFocusedPackage = boundPackage
                 v.animate().scaleX(if (hasFocus) FOCUS_SCALE else 1f)
                     .scaleY(if (hasFocus) FOCUS_SCALE else 1f)
                     .setDuration(120)
@@ -71,6 +81,7 @@ class HomeAdapter(
 
         fun bind(cell: Cell.App) {
             val entry = cell.entry
+            boundPackage = entry.packageName
             label.text = entry.label
             val art = loaded?.artFor(entry.packageName)
             icon.setImageDrawable(art?.drawable)
