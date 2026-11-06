@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -62,6 +63,30 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         loader.shutdown()
         super.onDestroy()
+    }
+
+    /**
+     * The grid swallows Up at its top edge and searches for focus only inside itself, so it can
+     * never reach the gear. Move focus between the top row and the gear by hand.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            val focused = currentFocus
+            val gear = findViewById<View>(R.id.settings)
+            when {
+                event.keyCode == KeyEvent.KEYCODE_DPAD_UP &&
+                    focused != null && focused.nextFocusUpId == R.id.settings -> {
+                    gear.requestFocus()
+                    return true
+                }
+                event.keyCode == KeyEvent.KEYCODE_DPAD_DOWN && focused === gear -> {
+                    val target = adapter.lastFocusedPackage ?: adapter.firstAppPackage()
+                    if (target != null) focusTile(target)
+                    return true
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     /** A launcher has nowhere to go back to. */

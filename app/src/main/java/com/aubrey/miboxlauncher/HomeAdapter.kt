@@ -21,9 +21,12 @@ class HomeAdapter(
     var lastFocusedPackage: String? = null
         private set
 
+    private var topRow: Set<Int> = emptySet()
+
     fun submit(newCells: List<Cell>, newLoaded: LoadedApps) {
         cells = newCells
         loaded = newLoaded
+        topRow = HomeModel.topRowPositions(newCells)
         notifyDataSetChanged()
     }
 
@@ -60,7 +63,7 @@ class HomeAdapter(
             is Cell.EmptySlot -> holder.itemView.findViewById<TextView>(R.id.hint).apply {
                 text = if (cell.showHint) context.getString(R.string.pin_hint) else ""
             }
-            is Cell.App -> (holder as AppHolder).bind(cell)
+            is Cell.App -> (holder as AppHolder).bind(cell, isTopRow = position in topRow)
         }
     }
 
@@ -90,9 +93,11 @@ class HomeAdapter(
             }
         }
 
-        fun bind(cell: Cell.App) {
+        fun bind(cell: Cell.App, isTopRow: Boolean) {
             val entry = cell.entry
             boundPackage = entry.packageName
+            // Marks the top row. MainActivity.dispatchKeyEvent sends Up from these tiles to the gear.
+            itemView.nextFocusUpId = if (isTopRow) R.id.settings else View.NO_ID
             label.text = entry.label
             val art = loaded?.artFor(entry.packageName)
             icon.setImageDrawable(art?.drawable)

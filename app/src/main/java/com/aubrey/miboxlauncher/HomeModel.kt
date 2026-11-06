@@ -46,6 +46,17 @@ object HomeModel {
         return cells
     }
 
+    /**
+     * Positions of the tiles in the top row of focusable tiles: the pinned tiles when there are
+     * any, else the first [COLUMNS] app tiles. Pressing Up on one of these moves focus to the gear.
+     */
+    fun topRowPositions(cells: List<Cell>): Set<Int> {
+        val apps = cells.withIndex().filter { it.value is Cell.App }
+        val pinned = apps.filter { (it.value as Cell.App).pinned }
+        val topRow = if (pinned.isNotEmpty()) pinned else apps.take(COLUMNS)
+        return topRow.map { it.index }.toSet()
+    }
+
     /** Pins [packageName], or unpins it when already pinned. Returns [pins] unchanged when full. */
     fun togglePin(pins: List<String>, packageName: String): List<String> = when {
         packageName in pins -> pins.filterNot { it == packageName }

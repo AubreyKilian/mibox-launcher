@@ -48,6 +48,23 @@ class HomeModelTest {
     }
 
     @Test
+    fun topRowIsThePinnedTilesWhenThereAreAny() {
+        val apps = listOf(app("a"), app("b"), app("c"))
+        val cells = HomeModel.build(apps, listOf("c", "a"))
+
+        assertEquals(setOf(1, 2), HomeModel.topRowPositions(cells))
+    }
+
+    @Test
+    fun topRowIsTheFirstFiveAppsWhenNothingIsPinned() {
+        val apps = ('a'..'h').map { app(it.toString()) }
+        val cells = HomeModel.build(apps, emptyList())
+        val firstApp = cells.indexOfFirst { it is Cell.App }
+
+        assertEquals((firstApp until firstApp + 5).toSet(), HomeModel.topRowPositions(cells))
+    }
+
+    @Test
     fun togglePinAddsRemovesAndStopsAtFive() {
         assertEquals(listOf("a"), HomeModel.togglePin(emptyList(), "a"))
         assertEquals(emptyList<String>(), HomeModel.togglePin(listOf("a"), "a"))
