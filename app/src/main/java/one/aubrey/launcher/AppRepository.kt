@@ -1,4 +1,4 @@
-package one.aubrey
+package one.aubrey.launcher
 
 import android.content.Context
 import android.content.Intent

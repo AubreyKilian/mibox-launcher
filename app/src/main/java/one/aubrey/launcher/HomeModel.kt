@@ -1,4 +1,4 @@
-package one.aubrey
+package one.aubrey.launcher
 
 /** One launchable app. Pure data, so the layout logic is unit-testable. */
 data class AppEntry(

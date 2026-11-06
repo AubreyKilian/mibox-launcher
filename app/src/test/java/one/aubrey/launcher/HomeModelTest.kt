@@ -1,4 +1,4 @@
-package one.aubrey
+package one.aubrey.launcher
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

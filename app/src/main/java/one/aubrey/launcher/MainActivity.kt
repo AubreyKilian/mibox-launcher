@@ -1,4 +1,4 @@
-package one.aubrey
+package one.aubrey.launcher
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
