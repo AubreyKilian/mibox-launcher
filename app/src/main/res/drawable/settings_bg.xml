@@ -4,7 +4,7 @@
         <shape android:shape="oval">
             <solid android:color="@color/card_focused" />
             <stroke
-                android:width="3dp"
+                android:width="@dimen/focus_ring_width"
                 android:color="@color/focus_ring" />
         </shape>
     </item>

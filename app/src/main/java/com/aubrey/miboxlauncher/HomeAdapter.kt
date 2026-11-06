@@ -104,6 +104,6 @@ class HomeAdapter(
         const val TYPE_HEADER = 0
         const val TYPE_APP = 1
         const val TYPE_EMPTY = 2
-        const val FOCUS_SCALE = 1.08f
+        const val FOCUS_SCALE = 1.12f
     }
 }

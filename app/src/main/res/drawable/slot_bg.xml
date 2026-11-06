@@ -7,5 +7,5 @@
         android:color="@color/card_focused"
         android:dashGap="6dp"
         android:dashWidth="8dp" />
-    <corners android:radius="10dp" />
+    <corners android:radius="@dimen/tile_radius" />
 </shape>
