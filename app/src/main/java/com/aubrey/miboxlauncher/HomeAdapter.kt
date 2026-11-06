@@ -1,8 +1,10 @@
 package com.aubrey.miboxlauncher
 
+import android.graphics.Outline
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -70,6 +72,15 @@ class HomeAdapter(
         private var boundPackage: String? = null
 
         init {
+            val radius = view.resources.getDimension(R.dimen.tile_radius)
+            view.findViewById<View>(R.id.card).apply {
+                outlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(v: View, outline: Outline) {
+                        outline.setRoundRect(0, 0, v.width, v.height, radius)
+                    }
+                }
+                clipToOutline = true
+            }
             view.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) lastFocusedPackage = boundPackage
                 v.animate().scaleX(if (hasFocus) FOCUS_SCALE else 1f)

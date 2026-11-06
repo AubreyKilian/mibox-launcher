@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <!-- clipToOutline rounds the artwork to the card shape. The ring is the foreground so it
-         draws over the artwork. -->
+    <!-- HomeAdapter clips the artwork to rounded corners in code. The ring is the foreground so
+         it draws over the artwork. -->
     <com.aubrey.miboxlauncher.RatioFrameLayout
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card_bg"
-        android:clipToOutline="true"
         android:duplicateParentState="true"
         android:foreground="@drawable/focus_ring">
 
