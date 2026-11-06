@@ -54,5 +54,5 @@ records the choice but has no effect (tested on the emulator). Two things work:
 ## Uninstall
 
 ```sh
-adb uninstall com.aubrey.miboxlauncher
+adb uninstall one.aubrey
 ```

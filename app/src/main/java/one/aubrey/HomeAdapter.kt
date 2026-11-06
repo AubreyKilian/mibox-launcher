@@ -1,4 +1,4 @@
-package com.aubrey.miboxlauncher
+package one.aubrey
 
 import android.graphics.Outline
 import android.view.LayoutInflater

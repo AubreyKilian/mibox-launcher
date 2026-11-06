@@ -9,7 +9,7 @@
 
     <!-- HomeAdapter clips the artwork to rounded corners in code. The ring is the foreground so
          it draws over the artwork. -->
-    <com.aubrey.miboxlauncher.RatioFrameLayout
+    <one.aubrey.RatioFrameLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAccessibility="no" />
-    </com.aubrey.miboxlauncher.RatioFrameLayout>
+    </one.aubrey.RatioFrameLayout>
 
     <TextView
         android:id="@+id/label"

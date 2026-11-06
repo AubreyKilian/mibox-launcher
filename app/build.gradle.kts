@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.aubrey.miboxlauncher"
+    namespace = "one.aubrey"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aubrey.miboxlauncher"
+        applicationId = "one.aubrey"
         minSdk = 21
         // The Mi Box S runs Android 11 (API 30). Android applies the behaviour of the OS it
         // runs on, so a newer target adds no restrictions there.

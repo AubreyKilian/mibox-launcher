@@ -1,4 +1,4 @@
-package com.aubrey.miboxlauncher
+package one.aubrey
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

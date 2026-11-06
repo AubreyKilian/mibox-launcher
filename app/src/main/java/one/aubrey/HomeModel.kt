@@ -1,4 +1,4 @@
-package com.aubrey.miboxlauncher
+package one.aubrey
 
 /** One launchable app. Pure data, so the layout logic is unit-testable. */
 data class AppEntry(

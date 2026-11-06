@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <com.aubrey.miboxlauncher.RatioFrameLayout
+    <one.aubrey.RatioFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/slot_bg">
@@ -19,7 +19,7 @@
             android:padding="12dp"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
-    </com.aubrey.miboxlauncher.RatioFrameLayout>
+    </one.aubrey.RatioFrameLayout>
 
     <!-- Keeps the empty slot as tall as an app tile (label row). -->
     <View
