@@ -18,6 +18,8 @@ on other Android TV devices (it needs Android 5.0 or newer), but no promises.
   network, load ads or send analytics. Check with `aapt2 dump badging app-release.apk`.
 - No recommendations, no search, no live-TV row. It shows apps only.
 
+![The home screen on a Mi Box S: clock and date, a gear, the Favourites row and the Apps grid](docs/screenshot-home.png)
+
 ## Build and test
 
 Needs JDK 17 or newer and the Android SDK (platform 34, build-tools 34.0.0).
