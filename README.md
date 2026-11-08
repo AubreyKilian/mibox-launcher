@@ -42,6 +42,43 @@ Android 11 TV emulator image (1080p) and driven with D-pad key events.
    Accept the "Allow USB debugging?" dialog on the TV.
 3. Turn USB debugging off again, which closes port 5555.
 
+### Build from source and install with a coding agent
+
+A coding agent such as [Claude Code](https://claude.com/claude-code) can do most of the build
+and install for you. There is no prebuilt APK, so the agent builds the app from source. That
+needs JDK 17 or newer, the Android SDK (platform 34, build-tools 34.0.0) and adb on your
+computer. If they are not already installed, the agent has to download and install them first,
+which can come to a gigabyte or more. The first Gradle build also downloads Gradle and the
+project's dependencies.
+
+You still have to do the steps on the TV yourself: turning on USB debugging and accepting the
+"Allow USB debugging?" dialog. Run the agent on the computer that will build the app, on the same
+network as the box, and give it a prompt like this one (put in your box's IP address, which is
+under Settings → Network & Internet on the box):
+
+```text
+Install the mibox-launcher Android TV launcher on my TV box, which is at 192.168.1.50.
+
+1. Clone https://github.com/AubreyKilian/mibox-launcher and read its README.
+2. Check for JDK 17+, the Android SDK (platform 34, build-tools 34.0.0) and adb. If any are
+   missing, tell me what you would install and how, and wait for my OK before installing.
+3. Create local.properties with sdk.dir, then run
+   ./gradlew testDebugUnitTest assembleRelease. Stop and show me any failure.
+4. Tell me to turn on USB debugging on the box (Settings → Device Preferences → Developer
+   options) and wait until I say it is on.
+5. Run adb connect <ip>:5555. Tell me to accept the "Allow USB debugging?" dialog on the TV,
+   then check adb devices until the box shows as "device", not "unauthorized".
+6. Install app/build/outputs/apk/release/app-release.apk with adb install -r and confirm the
+   package one.aubrey.launcher is installed.
+7. Run adb disconnect and remind me to turn USB debugging off again.
+
+Do not disable or uninstall any system apps, and do not change the default home app. Ask me
+before running any command that changes the box other than installing this APK.
+```
+
+The agent stops wherever you need to act on the TV. Afterwards, set up the Home button yourself,
+as described in the next section.
+
 ## Make the Home button open it
 
 Google's TV launcher has a higher `HOME` priority than any normal app, and Android ignores the
