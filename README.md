@@ -5,6 +5,11 @@ An ad-free, offline home screen for a Mi Box S (Android TV / Google TV, Android 
 Built for one box and tested only on a Mi Box S and an Android 11 TV emulator. It should work
 on other Android TV devices (it needs Android 5.0 or newer), but no promises.
 
+> **AI disclaimer:** All of the code in this repository was written by
+> [Claude Code](https://claude.com/claude-code), Anthropic's AI coding agent, using the Claude
+> Sonnet 5.5 model. Later README changes were made with Claude Opus 5.5. It is provided as is,
+> with no warranty; see [LICENSE](LICENSE).
+
 - A **Favourites** row of five slots, then every other app, five across, sorted by name.
 - **Hold OK** on any tile to pin it or unpin it.
 - Dark theme, a clock, the date, and a **gear** that opens Android Settings
