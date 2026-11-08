@@ -2,6 +2,9 @@
 
 An ad-free, offline home screen for a Mi Box S (Android TV / Google TV, Android 11).
 
+Built for one box and tested only on a Mi Box S and an Android 11 TV emulator. It should work
+on other Android TV devices (it needs Android 5.0 or newer), but no promises.
+
 - A **Favourites** row of five slots, then every other app, five across, sorted by name.
 - **Hold OK** on any tile to pin it or unpin it.
 - Dark theme, a clock, the date, and a **gear** that opens Android Settings
@@ -20,8 +23,9 @@ Put `sdk.dir=/path/to/Android/Sdk` in `local.properties` (git-ignored).
 # APK: app/build/outputs/apk/release/app-release.apk
 ```
 
-The release build is signed with the local debug key and is not debuggable. That is fine for a
-personal sideload. Do not publish it.
+There are no prebuilt APKs. Build your own: the release build is signed with your local debug
+key and is not debuggable. That is fine for sideloading onto your own box, but don't distribute
+an APK signed that way.
 
 The grid logic (`HomeModel`) is pure Kotlin and covered by unit tests. The UI was also run on an
 Android 11 TV emulator image (1080p) and driven with D-pad key events.
@@ -56,3 +60,7 @@ records the choice but has no effect (tested on the emulator). Two things work:
 ```sh
 adb uninstall one.aubrey.launcher
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).
